@@ -8,7 +8,7 @@
 </head>
 <body>
     <?php 
-        if(!isset($_POST["txtNome"])):
+        if(!isset($_POST["txtNome"]) || strlen($_POST["txtNome"])==0):
     ?>
     <form method="POST" action="05.invia-ricevi.php">
 		<label for="txtNome">Nome</label>
