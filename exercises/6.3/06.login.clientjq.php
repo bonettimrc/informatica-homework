@@ -79,10 +79,10 @@
 					
 					if (nameError)
 					{
-						$("input[name='txtName']")[0].className = "moduleError";
+						$("[name='txtName']")[0].className = "moduleError";
 						$("#labelName")[0].className = "labelError";
 					}
-					$("input[name='txtName']")[0].value = nameValue;
+					$("[name='txtName']")[0].value = nameValue;
 					
 					
 					var passwordError = <?php echo ($passwordError)? "true" : "false"; ?>;
