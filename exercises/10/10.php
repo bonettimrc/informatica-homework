@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        table, tr{
+        table, td{
             border: 1px solid black;
         }
     </style>
@@ -32,6 +32,10 @@
         if (isset($_POST['submit'])) {
             //definisco il percorso locale
             $uploadPath = "uploads/" . basename($_FILES['file']['name']);
+            //se la cartella non esiste la creo
+            if (!file_exists('./uploads')) {
+                mkdir('./uploads', 0777, true);
+            }
             //sposto il file dal percorso temporaneo ad il percorso di destinazione, ottenuto unendo il percorso dell'applicazione a quello relativo
             move_uploaded_file($_FILES['file']['tmp_name'], "./".$uploadPath);
             //carica la riga della tabella nel riepilogo, uso la flag FILE_APPEND per non sovrascrivere le precedenti righe
