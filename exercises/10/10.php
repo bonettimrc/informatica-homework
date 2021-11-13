@@ -28,6 +28,9 @@
         <input type="submit" name="submit" value="Invia">
         <br>
     </form>
+    <form action="" method="post">
+        <input type="submit" name="azzera" value="Azzera">
+    </form>
     <?php
         if (isset($_POST['submit'])) {
             //definisco il percorso locale
@@ -40,6 +43,18 @@
             move_uploaded_file($_FILES['file']['tmp_name'], "./".$uploadPath);
             //carica la riga della tabella nel riepilogo, uso la flag FILE_APPEND per non sovrascrivere le precedenti righe
             file_put_contents("./riepilogo.html", "<tr><td><img src='".$uploadPath."' width='100px'></td><td>".$_POST["titolo"]."</td><td>".$_POST["descrizione"]."</td></tr>", FILE_APPEND);
+        }
+        if(isset($_POST['azzera'])){
+            //carica i perorsi di tutti i file in uploads
+            $files = glob('./uploads/*');
+            foreach($files as $file){
+                //elimina il file
+                unlink($file);
+            }
+            //se esiste riepilogo lo elimina
+            if(file_exists('./riepilogo.html')){
+                unlink('./riepilogo.html');
+            }
         }
     ?>
     <table>
