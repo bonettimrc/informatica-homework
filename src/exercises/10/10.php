@@ -6,20 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        table, td{
-            border: 1px solid black;
-        }
-    </style>
-</head>
-
 <body>
     <form action="" method="post" enctype="multipart/form-data">
-        <label for="textbox">Titolo immagine</label>
+        <label for="textbox" >Titolo immagine</label>
         <br>
         <input type="text" name="titolo">
         <br>
-        <label for="textarea">Descrizione immagine</label>
+        <label for="textarea" >Descrizione immagine</label>
         <br>
         <textarea rows="5" name="descrizione"></textarea>
         <br>
@@ -57,13 +50,14 @@
             }
         }
     ?>
-    <table>
+    <table class="table table-bordered mt-5">
         <tr>
             <th>Miniatura</th><th>Titolo</th><th>Descrizione</th>
         </tr>
         <?php //se il file della righe esiste lo stampa all'interno di una table 
         echo file_exists("./riepilogo.html")?file_get_contents("./riepilogo.html"):""?>
     </table>
+    </div>
 </body>
 
 </html>
