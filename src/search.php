@@ -17,6 +17,9 @@
     foreach ($dirContents as $key => $value) {
         if(strpos($value, $_GET["q"])!==false){
             $resultPath[count($resultPath)] = str_replace("/var/www/html","",$value);
+            if(count($resultPath)>=$_GET["n"]){
+                break;
+            }
         }
     }
     header('Content-Type: application/json; charset=utf-8');
