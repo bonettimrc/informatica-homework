@@ -16,7 +16,8 @@
     $dirContents = getDirContents("./");
     foreach ($dirContents as $key => $value) {
         if(strpos($value, $_GET["q"])!==false){
-            $resultPath[count($resultPath)] = str_replace("/var/www/html","",$value);
+            $result = str_replace("C:\\home\\site\\wwwroot","",$value);
+            $resultPath[count($resultPath)] = str_replace("/var/www/html","",$result);
             if(count($resultPath)>=$_GET["n"]){
                 break;
             }
