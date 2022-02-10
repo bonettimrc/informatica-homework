@@ -1,5 +1,6 @@
 <?php
 namespace MyNamespace;
+use \PDO;
 class DbManager {
     /**il nome server che ospita il motore/driver MySQL*/
     private static $host;
