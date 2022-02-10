@@ -4,4 +4,5 @@
     $conn = \test\DbManager::connect();
     $result = \test\DbManager::selectS($conn, "SOCCIA");
     print_r($result);
+    
 ?>

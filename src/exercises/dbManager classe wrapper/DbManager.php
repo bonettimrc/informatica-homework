@@ -16,6 +16,7 @@ class DbManager {
     private static function init()
     {
         $string = getenv("MYSQLCONNSTR_localdb");
+        print_r($string);
         $array = array();
         foreach( explode( ';', $string ) as $substr )
         {
@@ -86,21 +87,22 @@ class DbManager {
             return null;
         }
     }
-    /** esegue l’interrogazione SQL indicata in $sqlCommand tramite l’oggetto $pdo, restituendo un array con l’insieme
-    * dei record che soddisfano l’interrogazione, oppure un array vuoto se non vi sono corrispondenze.
-    * Il comando può prevedere segnaposti para+metrici (posizionali o denominati), in questo caso vanno forniti con il
-    * parametro $parameters, un array semplice nel caso di parametri posizionali, un array associativo nel caso di
-    * parametri denominati.
-    * I risultati vengono forniti sotto forma di:
-    * • array bidimensionale ($resultAsObject=false) PREDEFINITO
-    * ogni record/riga restituita è un array indicizzato sia per nome colonna che per indice (PDO::FETCH_BOTH)
-    * • array di oggetti anonimi ($resultAsObject=true e $className=null)
-    * ogni record/riga restituita è un oggetto con proprietà che corrispondono ai nomi delle colonne selezionate
-    * (PDO::FETCH_OBJ)
-    * • array di oggetti di una classe specifica ($resultAsObject=true e $className=nome_classe)
-    * ogni record/riga restituita è un oggetto del tipo corrispondente alla classe specificata, con proprietà che
-    * corrispondono ai nomi delle colonne selezionate (PDO::FETCH_CLASS)
-    * Genera un’eccezione in caso di errore.
+    /** 
+     * esegue l’interrogazione SQL indicata in $sqlCommand tramite l’oggetto $pdo, restituendo un array con l’insieme
+     * dei record che soddisfano l’interrogazione, oppure un array vuoto se non vi sono corrispondenze.
+     * Il comando può prevedere segnaposti para+metrici (posizionali o denominati), in questo caso vanno forniti con il
+     * parametro $parameters, un array semplice nel caso di parametri posizionali, un array associativo nel caso di
+     * parametri denominati.
+     * I risultati vengono forniti sotto forma di:
+     * • array bidimensionale ($resultAsObject=false) PREDEFINITO
+     * ogni record/riga restituita è un array indicizzato sia per nome colonna che per indice (PDO::FETCH_BOTH)
+     * • array di oggetti anonimi ($resultAsObject=true e $className=null)
+     * ogni record/riga restituita è un oggetto con proprietà che corrispondono ai nomi delle colonne selezionate
+     * (PDO::FETCH_OBJ)
+     * • array di oggetti di una classe specifica ($resultAsObject=true e $className=nome_classe)
+     * ogni record/riga restituita è un oggetto del tipo corrispondente alla classe specificata, con proprietà che
+     * corrispondono ai nomi delle colonne selezionate (PDO::FETCH_CLASS)
+     * Genera un’eccezione in caso di errore.
     */
     public static function select(PDO $pdo, $sqlCommand, $parameters=null,$resultAsObject=false, $className=null):array{
         $statement = $pdo->prepare($sqlCommand);
@@ -115,7 +117,8 @@ class DbManager {
         $results = $statement->fetchAll($FETCH_MODE);
         return $results;
     }
-    /** come select, ma restituisce null in caso di errore.
+    /** 
+     * come select, ma restituisce null in caso di errore.
     *NON GENERA ECCEZIONI */
     public static function selectS($pdo, $sqlCommand, $parameters=null, $resultAsObject=false, $className=null) : array{
         try {
@@ -126,11 +129,11 @@ class DbManager {
     }
     /**
      * Esegue il comando SQL indicato in $sqlCommand tramite l’oggetto $pdo, restituendo il numero di record
-    * effettivamente modificati, il comando può corrispondere ad un INSERT, UPDATE o DELETE.
-    * Il comando può prevedere segnaposti parametrici (posizionali o denominati), in questo caso vanno forniti con il
-    * parametro $parameters, un array semplice nel caso di parametri posizionali, un array associativo nel caso di
-    * parametri denominati.
-    * Genera un’eccezione in caso di errore.
+     * effettivamente modificati, il comando può corrispondere ad un INSERT, UPDATE o DELETE.
+     * Il comando può prevedere segnaposti parametrici (posizionali o denominati), in questo caso vanno forniti con il
+     * parametro $parameters, un array semplice nel caso di parametri posizionali, un array associativo nel caso di
+     * parametri denominati.
+     * Genera un’eccezione in caso di errore.
     */
     public static function execute($pdo, $sqlCommand, $parameters=null) : int {
         $statement = $pdo->prepare($sqlCommand);
