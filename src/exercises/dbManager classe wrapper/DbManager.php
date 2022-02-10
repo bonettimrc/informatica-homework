@@ -74,7 +74,7 @@ class DbManager {
      *Genera un’eccezione in caso di errore.
      */
     public static function connect($dbName)  {
-        return new PDO("mysql:host=".self::$host.";dbname=".self::$dbName.";port=".self::$port,self::$username, self::$password);
+        return new PDO("mysql:host=".self::$host.";dbname=".$dbName.";port=".self::$port,self::$username, self::$password);
     }
     /**
      * tenta la connessione al database specificato, restituendo il riferimento all’oggetto PDO istanziato, oppure null se
