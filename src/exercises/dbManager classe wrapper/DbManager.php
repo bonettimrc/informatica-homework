@@ -13,7 +13,7 @@ class DbManager {
      * Estrae dalla variabile di sistema "MYSQLCONNSTR_localdb" le informazioni utili per l’accesso e la manipolazione dei
      *database presenti sul server.
      */
-    private static function init()
+    public static function init()
     {
         $ConnectionStringEnvironmentVariable = getenv("MYSQLCONNSTR_localdb");
         $keyValues = explode(';', $ConnectionStringEnvironmentVariable);
