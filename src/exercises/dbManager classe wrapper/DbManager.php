@@ -1,5 +1,4 @@
 <?php
-namespace test;
 class DbManager {
     /**il nome server che ospita il motore/driver MySQL*/
     private static $host;
@@ -15,18 +14,18 @@ class DbManager {
      */
     private static function init()
     {
-        $string = getenv("MYSQLCONNSTR_localdb");
-        print_r($string);
-        $array = array();
-        foreach( explode( ';', $string ) as $substr )
-        {
-            $exploded = explode('=', $substr);
-            $array[ $exploded[0] ] = $exploded[1];
-        }
-        self::$host = $array["Database"];
-        self::$port = $array["Data Source"];
-        self::$username = $array["User"];
-        self::$password = $array["Password"];
+        $ConnectionStringEnvironmentVariable = getenv("MYSQLCONNSTR_localdb");
+        $keyValues = explode(';', $ConnectionStringEnvironmentVariable);
+        $keyValueDatabase = explode('=', $keyValues[0]);
+        $keyValueDataSource = explode('=', $keyValues[1]);
+        $keyValueUser = explode('=', $keyValues[2]);
+        $keyValuePassword = explode('=', $keyValues[3]);
+        $dataSource = $keyValueDataSource[1];
+        $ipPort = explode(':', $dataSource);
+        self::$host = $ipPort[0];
+        self::$port = $ipPort[1];
+        self::$username = $keyValueUser[1];
+        self::$password = $keyValuePassword[1];
     }
     /**
      * Se l’inizializzazione non è ancora avvenuta viene prima eseguito il metodo “init”.
@@ -73,7 +72,7 @@ class DbManager {
      *Genera un’eccezione in caso di errore.
      */
     public static function connect($dbName)  {
-        return new PDO("mysql:host=".self::$serverName.";dbname=".self::$dbName,self::$username, self::$password);
+        return new PDO("mysql:host=".self::$host.";dbname=".self::$dbName.";port=".self::$port,self::$username, self::$password);
     }
     /**
      * tenta la connessione al database specificato, restituendo il riferimento all’oggetto PDO istanziato, oppure null se
@@ -104,17 +103,19 @@ class DbManager {
      * corrispondono ai nomi delle colonne selezionate (PDO::FETCH_CLASS)
      * Genera un’eccezione in caso di errore.
     */
-    public static function select(PDO $pdo, $sqlCommand, $parameters=null,$resultAsObject=false, $className=null):array{
+    public static function select(PDO $pdo, string $sqlCommand, array $parameters=null,bool $resultAsObject=false, $className=null):array{
         $statement = $pdo->prepare($sqlCommand);
-        $statement->execute();
-        $FETCH_MODE = PDO::FETCH_BOTH;
+        $statement->execute($parameters);
+        $results;
         if($resultAsObject){
-            $FETCH_MODE = PDO::FETCH_OBJ;
             if(isset($className)){
-                $FETCH_MODE = PDO::FETCH_CLASS;
+                $results = $statement->fetchAll(PDO::FETCH_CLASS, $className);
+            }else{
+                $results = $statement->fetchAll(PDO::FETCH_OBJ);
             }
+        }else{
+            $results = $statement->fetchAll(PDO::FETCH_BOTH);
         }
-        $results = $statement->fetchAll($FETCH_MODE);
         return $results;
     }
     /** 
@@ -122,7 +123,7 @@ class DbManager {
     *NON GENERA ECCEZIONI */
     public static function selectS($pdo, $sqlCommand, $parameters=null, $resultAsObject=false, $className=null) : array{
         try {
-            return self::select($pdo, $sqlCommand, $parameters=null, $resultAsObject=false, $className=null);
+            return self::select($pdo, $sqlCommand, $parameters, $resultAsObject, $className);
         } catch (PDOException $ex) {
             return null;
         }

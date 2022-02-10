@@ -1,8 +1,7 @@
 <?php 
     include './DbManager.php';
-    \test\DbManager::init();
-    $conn = \test\DbManager::connect();
-    $result = \test\DbManager::selectS($conn, "SOCCIA");
+    DbManager::init();
+    $conn = DbManager::connect("northwind");
+    $result = DbManager::selectS($conn, "SELECT * FROM `prodotti`");
     print_r($result);
-    
 ?>
